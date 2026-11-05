@@ -1,0 +1,231 @@
+[gd_scene format=3 uid="uid://tdnn5tb2sn0j"]
+
+[ext_resource type="Script" uid="uid://gfpy8ijba6fj" path="res://motor_trifasico.gd" id="1_xxd2h"]
+[ext_resource type="Script" uid="uid://beyq1d5ltqrvn" path="res://calculadora.gd" id="2_c4hpf"]
+
+[node name="Motor-trifasico" type="Control" unique_id=1614836647]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xxd2h")
+
+[node name="Calculadora" type="Node" parent="." unique_id=378350077]
+script = ExtResource("2_c4hpf")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=455429002]
+layout_mode = 0
+offset_top = -8.0
+offset_right = 1152.0
+offset_bottom = 640.0
+color = Color(0.3137255, 0, 0, 1)
+
+[node name="TabContainer" type="TabContainer" parent="." unique_id=1171728779]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.7786458
+anchor_bottom = 0.2962963
+grow_horizontal = 2
+grow_vertical = 2
+current_tab = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Verificar motor" type="TabBar" parent="TabContainer" unique_id=1481545794]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="TabContainer/Verificar motor" unique_id=1478335758]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 9.0
+offset_right = 593.0
+offset_bottom = 140.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/Verificar motor/PanelContainer" unique_id=1178259563]
+layout_mode = 2
+
+[node name="Carga" type="PanelContainer" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer" unique_id=409491445]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Carga" unique_id=699809253]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Carga/VBoxContainer" unique_id=1085392667]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Carga"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Carga/VBoxContainer" unique_id=764410594]
+layout_mode = 2
+
+[node name="Labes-carga" type="VBoxContainer" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Carga/VBoxContainer/HBoxContainer" unique_id=31737182]
+layout_mode = 2
+theme_override_constants/separation = 17
+
+[node name="Label-kg" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Carga/VBoxContainer/HBoxContainer/Labes-carga" unique_id=1489020732]
+layout_mode = 2
+text = "Kg de carga"
+horizontal_alignment = 1
+
+[node name="Label-velocidad" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Carga/VBoxContainer/HBoxContainer/Labes-carga" unique_id=675606319]
+layout_mode = 2
+text = "Velocidad deseada"
+horizontal_alignment = 1
+
+[node name="Label-poleas" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Carga/VBoxContainer/HBoxContainer/Labes-carga" unique_id=1413107483]
+layout_mode = 2
+text = "Cantidad de poleas"
+horizontal_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Carga/VBoxContainer/HBoxContainer" unique_id=923276172]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="Valores-carga" type="VBoxContainer" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Carga/VBoxContainer/HBoxContainer" unique_id=500241152]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Label-kg" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Carga/VBoxContainer/HBoxContainer/Valores-carga" unique_id=389111595]
+layout_mode = 2
+text = "Kg de carga"
+horizontal_alignment = 1
+
+[node name="Label-velocidad" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Carga/VBoxContainer/HBoxContainer/Valores-carga" unique_id=1307279484]
+layout_mode = 2
+text = "Velocidad deseada"
+horizontal_alignment = 1
+
+[node name="Label-poleas" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Carga/VBoxContainer/HBoxContainer/Valores-carga" unique_id=1129670585]
+layout_mode = 2
+text = "Cantidad de poleas"
+horizontal_alignment = 1
+
+[node name="Fuente" type="PanelContainer" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer" unique_id=1518398301]
+layout_mode = 2
+
+[node name="Labels-fuente" type="VBoxContainer" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente" unique_id=1537201464]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/Labels-fuente" unique_id=1068482954]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Fuente"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/Labels-fuente" unique_id=163921539]
+layout_mode = 2
+
+[node name="Labels-fuente" type="VBoxContainer" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/Labels-fuente/HBoxContainer" unique_id=183486996]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Label-voltaje" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/Labels-fuente/HBoxContainer/Labels-fuente" unique_id=29636258]
+layout_mode = 2
+text = "Volataje fuente"
+horizontal_alignment = 1
+
+[node name="Label-frecuencia" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/Labels-fuente/HBoxContainer/Labels-fuente" unique_id=365345414]
+layout_mode = 2
+text = "Frecuencia fuente"
+horizontal_alignment = 1
+
+[node name="Label-corriente" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/Labels-fuente/HBoxContainer/Labels-fuente" unique_id=1088673037]
+layout_mode = 2
+text = "Corriente fuente"
+horizontal_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/Labels-fuente/HBoxContainer" unique_id=244622206]
+layout_mode = 2
+
+[node name="Valores-fuente" type="VBoxContainer" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/Labels-fuente/HBoxContainer" unique_id=368401969]
+layout_mode = 2
+theme_override_constants/separation = 19
+
+[node name="Label-voltaje" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/Labels-fuente/HBoxContainer/Valores-fuente" unique_id=436466786]
+layout_mode = 2
+text = "Volataje fuente"
+horizontal_alignment = 1
+
+[node name="Label-frecuencia" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/Labels-fuente/HBoxContainer/Valores-fuente" unique_id=1764459719]
+layout_mode = 2
+text = "Frecuencia fuente"
+horizontal_alignment = 1
+
+[node name="Label-corriente" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/Labels-fuente/HBoxContainer/Valores-fuente" unique_id=1700886618]
+layout_mode = 2
+text = "Corriente fuente"
+horizontal_alignment = 1
+
+[node name="Motor" type="PanelContainer" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer" unique_id=708523305]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Motor" unique_id=978174151]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Motor/VBoxContainer" unique_id=1171580149]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Motor:"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Motor/VBoxContainer" unique_id=2082904495]
+layout_mode = 2
+
+[node name="Labels-motor" type="VBoxContainer" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Motor/VBoxContainer/HBoxContainer" unique_id=443874052]
+layout_mode = 2
+
+[node name="Label5" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Motor/VBoxContainer/HBoxContainer/Labels-motor" unique_id=1133347613]
+layout_mode = 2
+text = "Voltaje estrella"
+horizontal_alignment = 1
+
+[node name="Label6" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Motor/VBoxContainer/HBoxContainer/Labels-motor" unique_id=1640628786]
+layout_mode = 2
+text = "Voltaje triangulo"
+horizontal_alignment = 1
+
+[node name="Label7" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Motor/VBoxContainer/HBoxContainer/Labels-motor" unique_id=280058955]
+layout_mode = 2
+text = "Par de polos"
+horizontal_alignment = 1
+
+[node name="Label4" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Motor/VBoxContainer/HBoxContainer/Labels-motor" unique_id=309361823]
+layout_mode = 2
+text = "HP motor"
+horizontal_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Motor/VBoxContainer/HBoxContainer" unique_id=1043805674]
+layout_mode = 2
+
+[node name="Valores-motor" type="VBoxContainer" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Motor/VBoxContainer/HBoxContainer" unique_id=1413275153]
+layout_mode = 2
+
+[node name="Label5" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Motor/VBoxContainer/HBoxContainer/Valores-motor" unique_id=355195742]
+layout_mode = 2
+text = "Voltaje estrella"
+horizontal_alignment = 1
+
+[node name="Label6" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Motor/VBoxContainer/HBoxContainer/Valores-motor" unique_id=1746692695]
+layout_mode = 2
+text = "Voltaje triangulo"
+horizontal_alignment = 1
+
+[node name="Label7" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Motor/VBoxContainer/HBoxContainer/Valores-motor" unique_id=940424509]
+layout_mode = 2
+text = "Par de polos"
+horizontal_alignment = 1
+
+[node name="Label4" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Motor/VBoxContainer/HBoxContainer/Valores-motor" unique_id=1934113102]
+layout_mode = 2
+text = "HP motor"
+horizontal_alignment = 1
+
+[node name="Calcular motor" type="TabBar" parent="TabContainer" unique_id=226255679]
+layout_mode = 2
+tab_alignment = 1
+tab_close_display_policy = 2
+metadata/_tab_index = 1

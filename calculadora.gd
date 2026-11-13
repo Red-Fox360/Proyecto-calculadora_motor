@@ -205,7 +205,7 @@ func caso_2(masa_kg: float, vel_ms: float, n_poleas: int, v_linea: float,
 # ============================================================
 # INICIO: PRUEBA RÁPIDA (borrar cuando hagas la interfaz)
 # ============================================================
-func _ready() -> void:
+#func _ready() -> void:
 	# 100 kg, 0.5 m/s, 2 poleas, motor 2 HP 220/380 V, red 380 V, 50 Hz, 4 polos
 	print(caso_1(100, 0.5, 2, 2, 220, 380, 380, 50, 4))
 	print(caso_2(100, 0.5, 2, 380, 50, 4, Conexion.ESTRELLA))

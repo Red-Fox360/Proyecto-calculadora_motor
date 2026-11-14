@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://beyq1d5ltqrvn" path="res://calculadora.gd" id="2_c4hpf"]
 [ext_resource type="Script" uid="uid://dpaex35e813ca" path="res://verificar_motor.gd" id="3_2ldxg"]
 
-[node name="Motor-trifasico" type="Control" unique_id=1614836647 node_paths=PackedStringArray("Salida_texto", "Selection_tab", "Masa", "Velocidad", "Poleas", "Voltaje", "Frecuencia", "Corriente", "Voltaje_estrella", "Voltaje_delta", "Par_polos", "HP")]
+[node name="Motor-trifasico" type="Control" unique_id=1614836647 node_paths=PackedStringArray("Salida_texto", "Selection_tab", "Carga", "Velocidad", "Poleas", "Voltaje", "Frecuencia", "Corriente", "Voltaje_estrella", "Voltaje_triangulo", "Par_polos", "HP")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -14,14 +14,14 @@ grow_vertical = 2
 script = ExtResource("1_xxd2h")
 Salida_texto = NodePath("output-panel/RichTextLabel")
 Selection_tab = NodePath("TabContainer")
-Masa = NodePath("TabContainer/Verificar motor/PanelContainer/HBoxContainer/Carga/VBoxContainer/HBoxContainer/Valores-carga/Kg")
+Carga = NodePath("TabContainer/Verificar motor/PanelContainer/HBoxContainer/Carga/VBoxContainer/HBoxContainer/Valores-carga/Kg")
 Velocidad = NodePath("TabContainer/Verificar motor/PanelContainer/HBoxContainer/Carga/VBoxContainer/HBoxContainer/Valores-carga/Velocidad")
 Poleas = NodePath("TabContainer/Verificar motor/PanelContainer/HBoxContainer/Carga/VBoxContainer/HBoxContainer/Valores-carga/Poleas")
 Voltaje = NodePath("TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/Labels-fuente/HBoxContainer/Valores-fuente/Voltaje")
 Frecuencia = NodePath("TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/Labels-fuente/HBoxContainer/Valores-fuente/Frecuencia")
 Corriente = NodePath("TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/Labels-fuente/HBoxContainer/Valores-fuente/Corriente")
 Voltaje_estrella = NodePath("TabContainer/Verificar motor/PanelContainer/HBoxContainer/Motor/VBoxContainer/HBoxContainer/Valores-motor/Voltaje-estrella")
-Voltaje_delta = NodePath("TabContainer/Verificar motor/PanelContainer/HBoxContainer/Motor/VBoxContainer/HBoxContainer/Valores-motor/Voltaje-triangulo")
+Voltaje_triangulo = NodePath("TabContainer/Verificar motor/PanelContainer/HBoxContainer/Motor/VBoxContainer/HBoxContainer/Valores-motor/Voltaje-triangulo")
 Par_polos = NodePath("TabContainer/Verificar motor/PanelContainer/HBoxContainer/Motor/VBoxContainer/HBoxContainer/Valores-motor/Par-de-polos")
 HP = NodePath("TabContainer/Verificar motor/PanelContainer/HBoxContainer/Motor/VBoxContainer/HBoxContainer/Valores-motor/HP-motor")
 
@@ -34,10 +34,12 @@ script = ExtResource("3_2ldxg")
 [node name="Calcular-motor" type="Node" parent="." unique_id=1580241876]
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=455429002]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.006
 offset_top = -3.0
-offset_right = 770.0
-offset_bottom = 352.0
+offset_bottom = -0.1000061
 color = Color(0.3137255, 0, 0, 1)
 
 [node name="TabContainer" type="TabContainer" parent="." unique_id=1171728779]

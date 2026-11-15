@@ -1,5 +1,5 @@
+class_name Calculos
 extends Node
-# Archivo sugerido: calculadora_motor.gd
 
 # ============================================================
 # INICIO: CONSTANTES Y TIPOS
@@ -7,18 +7,12 @@ extends Node
 const HP_A_W := 745.7
 const G := 9.81
 
-# Eficiencias estimadas (valores típicos, no medidos)
-const EF_POLEA_MEJOR := 0.98
-const EF_POLEA_PEOR := 0.95
-const EF_TRANSM_MEJOR := 0.95   # tambor + reductor
-const EF_TRANSM_PEOR := 0.85
-
-const ACELERACION := 0.5        # m/s²
-const FACTOR_SEG := 1.25
+# Valores estimados típicos (no medidos)
+const EF_TRANSM := 0.9              # tambor + reductor
 const COS_PHI := 0.85
 const EF_MOTOR := 0.85
 const DESLIZAMIENTO := 0.04
-const TOLERANCIA_VOLTAJE := 0.05   # 5 % de diferencia aceptada con la placa
+const TOLERANCIA_VOLTAJE := 0.05    # 5 % de diferencia aceptada con la placa
 
 enum Conexion { ESTRELLA, TRIANGULO }
 const INCOMPATIBLE := -1
@@ -28,25 +22,78 @@ const INCOMPATIBLE := -1
 
 
 # ============================================================
+# INICIO: VARIABLES DE RESULTADOS
+# (guardan los resultados del último cálculo)
+# ============================================================
+var calculo_ok := false
+var mensaje_error := ""
+var caso_actual := 0                # 1 o 2
+
+# Ambos casos
+var vel_deseada_ms := 0.0
+var p_necesaria_w := 0.0
+var p_necesaria_hp := 0.0
+var i_linea_a := 0.0
+var rpm_real := 0.0
+var torque_nm := 0.0
+var v_fase_estrella_v := 0.0
+var i_fase_estrella_a := 0.0
+var v_fase_triangulo_v := 0.0
+var i_fase_triangulo_a := 0.0
+
+# Solo caso 1
+var cumple := false
+var p_motor_w := 0.0
+var carga_pct := 0.0                # % de la potencia del motor que usa la carga
+var v_max_ms := 0.0
+var conexion_texto := ""
+var v_fase_v := 0.0                 # voltaje por bobina en la conexión elegida
+var i_fase_a := 0.0                 # corriente por bobina en la conexión elegida
+
+func limpiar_resultados() -> void:
+	calculo_ok = false
+	mensaje_error = ""
+	caso_actual = 0
+	vel_deseada_ms = 0.0
+	p_necesaria_w = 0.0
+	p_necesaria_hp = 0.0
+	i_linea_a = 0.0
+	rpm_real = 0.0
+	torque_nm = 0.0
+	v_fase_estrella_v = 0.0
+	i_fase_estrella_a = 0.0
+	v_fase_triangulo_v = 0.0
+	i_fase_triangulo_a = 0.0
+	cumple = false
+	p_motor_w = 0.0
+	carga_pct = 0.0
+	v_max_ms = 0.0
+	conexion_texto = ""
+	v_fase_v = 0.0
+	i_fase_a = 0.0
+# ============================================================
+# FIN: VARIABLES DE RESULTADOS
+# ============================================================
+
+
+# ============================================================
 # INICIO: VALIDACIONES
 # (devuelven "" si todo está bien, o el mensaje de error)
 # ============================================================
-func validar_carga(masa_kg: float, vel_ms: float, n_poleas: int) -> String:
+func validar_carga(masa_kg: float, vel_ms: float) -> String:
 	if masa_kg <= 0.0:
 		return "La masa debe ser mayor que 0."
 	if vel_ms <= 0.0:
 		return "La velocidad debe ser mayor que 0."
-	if n_poleas < 0:
-		return "El número de poleas no puede ser negativo."
 	return ""
 
-func validar_red(v_linea: float, frecuencia: float, polos: int) -> String:
+func validar_red(v_linea: float, frecuencia: float, pares_polos: int) -> String:
 	if v_linea <= 0.0:
 		return "El voltaje de la red debe ser mayor que 0."
 	if frecuencia <= 0.0:
 		return "La frecuencia debe ser mayor que 0."
-	if polos < 2 or polos % 2 != 0:
-		return "Los polos deben ser un número par (2, 4, 6, 8...)."
+	if pares_polos < 1:
+		return "Los pares de polos deben ser al menos 1."
 	return ""
 # ============================================================
 # FIN: VALIDACIONES
@@ -54,77 +101,29 @@ func validar_red(v_linea: float, frecuencia: float, polos: int) -> String:
 
 
 # ============================================================
-# INICIO: CÁLCULO DE POTENCIA (rango mínima / recomendada)
+# INICIO: FÓRMULAS (potencia, velocidad, eléctrico, conexión)
 # ============================================================
-func _eficiencias(n_poleas: int) -> Dictionary:
-	return {
-		"mejor": pow(EF_POLEA_MEJOR, n_poleas) * EF_TRANSM_MEJOR,
-		"peor": pow(EF_POLEA_PEOR, n_poleas) * EF_TRANSM_PEOR
-	}
+# Potencia que exige mover la carga (motor al 100 %, sin márgenes)
+func potencia_necesaria_w(masa_kg: float, vel_ms: float) -> float:
+	return masa_kg * G * vel_ms / EF_TRANSM
 
-func rango_potencia_polea(masa_kg: float, vel_ms: float, n_poleas: int) -> Dictionary:
-	var ef = _eficiencias(n_poleas)
-	# Mínima: velocidad constante, mejor eficiencia, sin seguridad
-	var p_min = (masa_kg * G * vel_ms) / ef["mejor"]
-	# Recomendada: con aceleración, peor eficiencia y factor de seguridad
-	var p_rec = (masa_kg * (G + ACELERACION) * vel_ms) / ef["peor"] * FACTOR_SEG
-	return {
-		"p_min_w": p_min, "p_rec_w": p_rec,
-		"p_min_hp": p_min / HP_A_W, "p_rec_hp": p_rec / HP_A_W
-	}
-# ============================================================
-# FIN: CÁLCULO DE POTENCIA
-# ============================================================
+# Velocidad máxima a la que ese motor mueve la carga
+func velocidad_maxima_ms(p_motor: float, masa_kg: float) -> float:
+	return p_motor * EF_TRANSM / (masa_kg * G)
 
+# Guarda corriente, rpm, torque y valores por bobina de ambas conexiones
+func _calcular_electrico(p_salida_w: float, v_linea: float, frecuencia: float,
+		pares_polos: int) -> void:
+	var i_linea = (p_salida_w / EF_MOTOR) / (sqrt(3) * v_linea * COS_PHI)
+	i_linea_a = i_linea
+	v_fase_estrella_v = v_linea / sqrt(3)
+	i_fase_estrella_a = i_linea
+	v_fase_triangulo_v = v_linea
+	i_fase_triangulo_a = i_linea / sqrt(3)
 
-# ============================================================
-# INICIO: VERIFICACIÓN DEL MOTOR Y VELOCIDAD MÁXIMA
-# ============================================================
-func verificar_motor(hp: float, rango: Dictionary) -> String:
-	var p_motor = hp * HP_A_W
-	if p_motor < rango["p_min_w"]:
-		return "No cumple"
-	elif p_motor < rango["p_rec_w"]:
-		return "Justo (sin margen)"
-	return "Cumple con holgura"
-
-func velocidad_maxima(hp: float, masa_kg: float, n_poleas: int) -> Dictionary:
-	var ef = _eficiencias(n_poleas)
-	var p_motor = hp * HP_A_W
-	return {
-		"v_limite_ms": p_motor * ef["mejor"] / (masa_kg * G),
-		"v_comoda_ms": p_motor * ef["peor"] / (masa_kg * (G + ACELERACION) * FACTOR_SEG)
-	}
-# ============================================================
-# FIN: VERIFICACIÓN DEL MOTOR Y VELOCIDAD MÁXIMA
-# ============================================================
-
-
-# ============================================================
-# INICIO: CÁLCULO ELÉCTRICO Y CONEXIÓN
-# ============================================================
-func calcular_electrico(p_salida_w: float, v_linea: float, frecuencia: float,
-		polos: int, conexion: int) -> Dictionary:
-	var p_entrada = p_salida_w / EF_MOTOR
-	var i_linea = p_entrada / (sqrt(3) * v_linea * COS_PHI)
-
-	var v_fase: float
-	var i_fase: float
-	if conexion == Conexion.ESTRELLA:
-		v_fase = v_linea / sqrt(3)
-		i_fase = i_linea
-	else:
-		v_fase = v_linea
-		i_fase = i_linea / sqrt(3)
-
-	var rpm_sinc = 120.0 * frecuencia / polos
-	var rpm_real = rpm_sinc * (1.0 - DESLIZAMIENTO)
-	var torque = p_salida_w / (rpm_real * TAU / 60.0)
-
-	return {
-		"i_linea_a": i_linea, "v_fase_v": v_fase, "i_fase_a": i_fase,
-		"rpm_sincrona": rpm_sinc, "rpm_real": rpm_real, "torque_nm": torque
-	}
+	var rpm_sinc = 60.0 * frecuencia / pares_polos
+	rpm_real = rpm_sinc * (1.0 - DESLIZAMIENTO)
+	torque_nm = p_salida_w / (rpm_real * TAU / 60.0)
 
 # Devuelve Conexion.ESTRELLA, Conexion.TRIANGULO o INCOMPATIBLE
 func conexion_para_red(v_linea: float, v_placa_tri: float, v_placa_estr: float) -> int:
@@ -137,40 +136,56 @@ func conexion_para_red(v_linea: float, v_placa_tri: float, v_placa_estr: float) 
 func nombre_conexion(conexion: int) -> String:
 	return "Estrella" if conexion == Conexion.ESTRELLA else "Triángulo"
 # ============================================================
-# FIN: CÁLCULO ELÉCTRICO Y CONEXIÓN
+# FIN: FÓRMULAS
 # ============================================================
 
 
 # ============================================================
 # INICIO: CASO 1 (ya tengo el motor)
+# Guarda los resultados en las variables. Devuelve true si todo salió bien.
 # ============================================================
-func caso_1(masa_kg: float, vel_ms: float, n_poleas: int, hp: float,
+func calcular_caso_1(masa_kg: float, vel_ms: float, hp: float,
 		v_placa_tri: float, v_placa_estr: float, v_linea: float,
-		frecuencia: float, polos: int) -> Dictionary:
-	var err = validar_carga(masa_kg, vel_ms, n_poleas)
+		frecuencia: float, pares_polos: int) -> bool:
+	limpiar_resultados()
+	caso_actual = 1
+
+	var err = validar_carga(masa_kg, vel_ms)
 	if err == "":
-		err = validar_red(v_linea, frecuencia, polos)
+		err = validar_red(v_linea, frecuencia, pares_polos)
 	if err == "" and hp <= 0.0:
 		err = "Los HP del motor deben ser mayores que 0."
 	if err == "" and (v_placa_tri <= 0.0 or v_placa_estr <= 0.0):
 		err = "Los voltajes de la placa deben ser mayores que 0."
 	if err != "":
-		return {"ok": false, "error": err}
+		mensaje_error = err
+		return false
 
 	var conexion = conexion_para_red(v_linea, v_placa_tri, v_placa_estr)
 	if conexion == INCOMPATIBLE:
-		return {"ok": false, "error": "El motor (%s/%s V) no es compatible con una red de %s V." \
-			% [v_placa_tri, v_placa_estr, v_linea]}
+		mensaje_error = "El motor (%s/%s V) no es compatible con una red de %s V." \
+			% [v_placa_tri, v_placa_estr, v_linea]
+		return false
 
-	var rango = rango_potencia_polea(masa_kg, vel_ms, n_poleas)
-	return {
-		"ok": true,
-		"veredicto": verificar_motor(hp, rango),
-		"rango": rango,
-		"velocidades_max": velocidad_maxima(hp, masa_kg, n_poleas),
-		"conexion": nombre_conexion(conexion),
-		"electrico": calcular_electrico(hp * HP_A_W, v_linea, frecuencia, polos, conexion)
-	}
+	vel_deseada_ms = vel_ms
+	p_necesaria_w = potencia_necesaria_w(masa_kg, vel_ms)
+	p_necesaria_hp = p_necesaria_w / HP_A_W
+	p_motor_w = hp * HP_A_W
+	carga_pct = p_necesaria_w / p_motor_w * 100.0
+	cumple = p_necesaria_w <= p_motor_w
+	v_max_ms = velocidad_maxima_ms(p_motor_w, masa_kg)
+
+	conexion_texto = nombre_conexion(conexion)
+	_calcular_electrico(p_motor_w, v_linea, frecuencia, pares_polos)
+	if conexion == Conexion.ESTRELLA:
+		v_fase_v = v_fase_estrella_v
+		i_fase_a = i_fase_estrella_a
+	else:
+		v_fase_v = v_fase_triangulo_v
+		i_fase_a = i_fase_triangulo_a
+
+	calculo_ok = true
+	return true
 # ============================================================
 # FIN: CASO 1
 # ============================================================
@@ -178,37 +193,29 @@ func caso_1(masa_kg: float, vel_ms: float, n_poleas: int, hp: float,
 
 # ============================================================
 # INICIO: CASO 2 (no tengo el motor)
+# Guarda los resultados en las variables. Devuelve true si todo salió bien.
+# Muestra los valores por bobina de AMBAS conexiones: el usuario busca un
+# motor cuya placa coincida con su red.
 # ============================================================
-func caso_2(masa_kg: float, vel_ms: float, n_poleas: int, v_linea: float,
-		frecuencia: float, polos: int, conexion: int) -> Dictionary:
-	var err = validar_carga(masa_kg, vel_ms, n_poleas)
-	if err == "":
-		err = validar_red(v_linea, frecuencia, polos)
-	if err == "" and conexion != Conexion.ESTRELLA and conexion != Conexion.TRIANGULO:
-		err = "Debes elegir una conexión (estrella o triángulo)."
-	if err != "":
-		return {"ok": false, "error": err}
+func calcular_caso_2(masa_kg: float, vel_ms: float, v_linea: float,
+		frecuencia: float, pares_polos: int) -> bool:
+	limpiar_resultados()
+	caso_actual = 2
 
-	var rango = rango_potencia_polea(masa_kg, vel_ms, n_poleas)
-	return {
-		"ok": true,
-		"rango": rango,
-		"conexion": nombre_conexion(conexion),
-		# Los valores eléctricos se calculan con la potencia recomendada
-		"electrico": calcular_electrico(rango["p_rec_w"], v_linea, frecuencia, polos, conexion)
-	}
+	var err = validar_carga(masa_kg, vel_ms)
+	if err == "":
+		err = validar_red(v_linea, frecuencia, pares_polos)
+	if err != "":
+		mensaje_error = err
+		return false
+
+	vel_deseada_ms = vel_ms
+	p_necesaria_w = potencia_necesaria_w(masa_kg, vel_ms)
+	p_necesaria_hp = p_necesaria_w / HP_A_W
+	_calcular_electrico(p_necesaria_w, v_linea, frecuencia, pares_polos)
+
+	calculo_ok = true
+	return true
 # ============================================================
 # FIN: CASO 2
-# ============================================================
-
-
-# ============================================================
-# INICIO: PRUEBA RÁPIDA (borrar cuando hagas la interfaz)
-# ============================================================
-#func _ready() -> void:
-	# 100 kg, 0.5 m/s, 2 poleas, motor 2 HP 220/380 V, red 380 V, 50 Hz, 4 polos
-	print(caso_1(100, 0.5, 2, 2, 220, 380, 380, 50, 4))
-	print(caso_2(100, 0.5, 2, 380, 50, 4, Conexion.ESTRELLA))
-# ============================================================
-# FIN: PRUEBA RÁPIDA
 # ============================================================

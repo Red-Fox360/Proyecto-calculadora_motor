@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://beyq1d5ltqrvn" path="res://calculadora.gd" id="2_c4hpf"]
 [ext_resource type="Script" uid="uid://dpaex35e813ca" path="res://verificar_motor.gd" id="3_2ldxg"]
 
-[node name="Motor-trifasico" type="Control" unique_id=1614836647 node_paths=PackedStringArray("Salida_texto", "Selection_tab", "Carga", "Velocidad", "Poleas", "Voltaje", "Frecuencia", "Corriente", "Voltaje_estrella", "Voltaje_triangulo", "Par_polos", "HP")]
+[node name="Motor-trifasico" type="Control" unique_id=1614836647 node_paths=PackedStringArray("Salida_texto", "Selection_tab", "Carga", "Velocidad", "Poleas", "Potencia", "Voltaje_estrella", "Voltaje_triangulo", "Par_polos", "HP")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -17,9 +17,7 @@ Selection_tab = NodePath("TabContainer")
 Carga = NodePath("TabContainer/Verificar motor/PanelContainer/HBoxContainer/Carga/VBoxContainer/HBoxContainer/Valores-carga/Kg")
 Velocidad = NodePath("TabContainer/Verificar motor/PanelContainer/HBoxContainer/Carga/VBoxContainer/HBoxContainer/Valores-carga/Velocidad")
 Poleas = NodePath("TabContainer/Verificar motor/PanelContainer/HBoxContainer/Carga/VBoxContainer/HBoxContainer/Valores-carga/Poleas")
-Voltaje = NodePath("TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/Labels-fuente/HBoxContainer/Valores-fuente/Voltaje")
-Frecuencia = NodePath("TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/Labels-fuente/HBoxContainer/Valores-fuente/Frecuencia")
-Corriente = NodePath("TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/Labels-fuente/HBoxContainer/Valores-fuente/Corriente")
+Potencia = NodePath("TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/VBoxContainer/HBoxContainer/Valores-fuente/Potencia")
 Voltaje_estrella = NodePath("TabContainer/Verificar motor/PanelContainer/HBoxContainer/Motor/VBoxContainer/HBoxContainer/Valores-motor/Voltaje-estrella")
 Voltaje_triangulo = NodePath("TabContainer/Verificar motor/PanelContainer/HBoxContainer/Motor/VBoxContainer/HBoxContainer/Valores-motor/Voltaje-triangulo")
 Par_polos = NodePath("TabContainer/Verificar motor/PanelContainer/HBoxContainer/Motor/VBoxContainer/HBoxContainer/Valores-motor/Par-de-polos")
@@ -130,56 +128,57 @@ alignment = 1
 [node name="Fuente" type="PanelContainer" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer" unique_id=1518398301]
 layout_mode = 2
 
-[node name="Labels-fuente" type="VBoxContainer" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente" unique_id=1537201464]
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente" unique_id=1537201464]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/Labels-fuente" unique_id=1068482954]
+[node name="Label" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/VBoxContainer" unique_id=1068482954]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "Fuente"
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/Labels-fuente" unique_id=163921539]
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/VBoxContainer" unique_id=163921539]
 layout_mode = 2
 
-[node name="Labels-fuente" type="VBoxContainer" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/Labels-fuente/HBoxContainer" unique_id=183486996]
+[node name="Labels-fuente" type="VBoxContainer" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/VBoxContainer/HBoxContainer" unique_id=183486996]
 layout_mode = 2
 theme_override_constants/separation = 15
 
-[node name="Label-voltaje" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/Labels-fuente/HBoxContainer/Labels-fuente" unique_id=29636258]
+[node name="Label-voltaje" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/VBoxContainer/HBoxContainer/Labels-fuente" unique_id=29636258]
 layout_mode = 2
 text = "Volataje:"
 horizontal_alignment = 1
 
-[node name="Label-frecuencia" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/Labels-fuente/HBoxContainer/Labels-fuente" unique_id=365345414]
+[node name="Label-frecuencia" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/VBoxContainer/HBoxContainer/Labels-fuente" unique_id=365345414]
 layout_mode = 2
 text = "Frecuencia:"
 horizontal_alignment = 1
 
-[node name="Label-corriente" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/Labels-fuente/HBoxContainer/Labels-fuente" unique_id=1088673037]
+[node name="Label-corriente" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/VBoxContainer/HBoxContainer/Labels-fuente" unique_id=1088673037]
 layout_mode = 2
-text = "Corriente Max:"
+text = "Potencia"
 horizontal_alignment = 1
 
-[node name="VSeparator" type="VSeparator" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/Labels-fuente/HBoxContainer" unique_id=244622206]
+[node name="VSeparator" type="VSeparator" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/VBoxContainer/HBoxContainer" unique_id=244622206]
 layout_mode = 2
 
-[node name="Valores-fuente" type="VBoxContainer" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/Labels-fuente/HBoxContainer" unique_id=368401969]
+[node name="Valores-fuente" type="VBoxContainer" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/VBoxContainer/HBoxContainer" unique_id=368401969]
 layout_mode = 2
+theme_override_constants/separation = 13
 
-[node name="Voltaje" type="LineEdit" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/Labels-fuente/HBoxContainer/Valores-fuente" unique_id=1894862882]
+[node name="Voltaje" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/VBoxContainer/HBoxContainer/Valores-fuente" unique_id=156885519]
 layout_mode = 2
-placeholder_text = "V"
-alignment = 1
+text = "380 V"
+horizontal_alignment = 1
 
-[node name="Frecuencia" type="LineEdit" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/Labels-fuente/HBoxContainer/Valores-fuente" unique_id=120308902]
+[node name="Frecuencia" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/VBoxContainer/HBoxContainer/Valores-fuente" unique_id=1430545079]
 layout_mode = 2
-placeholder_text = "Hz"
-alignment = 1
+text = "50 Hz"
+horizontal_alignment = 1
 
-[node name="Corriente" type="LineEdit" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/Labels-fuente/HBoxContainer/Valores-fuente" unique_id=622652993]
+[node name="Potencia" type="LineEdit" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/VBoxContainer/HBoxContainer/Valores-fuente" unique_id=622652993]
 layout_mode = 2
-placeholder_text = "A"
+placeholder_text = "W"
 alignment = 1
 
 [node name="Motor" type="PanelContainer" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer" unique_id=708523305]
@@ -240,7 +239,7 @@ alignment = 1
 
 [node name="Par-de-polos" type="LineEdit" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Motor/VBoxContainer/HBoxContainer/Valores-motor" unique_id=183306446]
 layout_mode = 2
-placeholder_text = "P.P"
+placeholder_text = " 2 P.P"
 alignment = 1
 
 [node name="HP-motor" type="LineEdit" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Motor/VBoxContainer/HBoxContainer/Valores-motor" unique_id=1169539831]

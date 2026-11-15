@@ -310,17 +310,17 @@ layout_mode = 2
 layout_mode = 2
 theme_override_constants/separation = 5
 
-[node name="LineEdit" type="LineEdit" parent="TabContainer/Calcular motor/PanelContainer/VBoxContainer/Carga/VBoxContainer/HBoxContainer/Values" unique_id=313137653]
+[node name="Carga" type="LineEdit" parent="TabContainer/Calcular motor/PanelContainer/VBoxContainer/Carga/VBoxContainer/HBoxContainer/Values" unique_id=313137653]
 layout_mode = 2
 placeholder_text = "Kg"
 alignment = 1
 
-[node name="LineEdit2" type="LineEdit" parent="TabContainer/Calcular motor/PanelContainer/VBoxContainer/Carga/VBoxContainer/HBoxContainer/Values" unique_id=725268723]
+[node name="Velocidad" type="LineEdit" parent="TabContainer/Calcular motor/PanelContainer/VBoxContainer/Carga/VBoxContainer/HBoxContainer/Values" unique_id=725268723]
 layout_mode = 2
 placeholder_text = "ms"
 alignment = 1
 
-[node name="LineEdit3" type="LineEdit" parent="TabContainer/Calcular motor/PanelContainer/VBoxContainer/Carga/VBoxContainer/HBoxContainer/Values" unique_id=1040488800]
+[node name="Poleas" type="LineEdit" parent="TabContainer/Calcular motor/PanelContainer/VBoxContainer/Carga/VBoxContainer/HBoxContainer/Values" unique_id=1040488800]
 layout_mode = 2
 placeholder_text = "ms"
 alignment = 1

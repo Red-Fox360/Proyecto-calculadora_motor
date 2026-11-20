@@ -2,9 +2,8 @@
 
 [ext_resource type="Script" uid="uid://gfpy8ijba6fj" path="res://motor_trifasico.gd" id="1_xxd2h"]
 [ext_resource type="Script" uid="uid://beyq1d5ltqrvn" path="res://calculadora.gd" id="2_c4hpf"]
-[ext_resource type="Script" uid="uid://dpaex35e813ca" path="res://verificar_motor.gd" id="3_2ldxg"]
 
-[node name="Motor-trifasico" type="Control" unique_id=1614836647 node_paths=PackedStringArray("Salida_texto", "Selection_tab", "Carga", "Velocidad", "Poleas", "Potencia", "Voltaje_estrella", "Voltaje_triangulo", "Par_polos", "HP")]
+[node name="Motor-trifasico" type="Control" unique_id=1614836647 node_paths=PackedStringArray("Salida_texto", "Selection_tab", "Carga", "Velocidad", "Voltaje_estrella", "Voltaje_triangulo", "Par_polos", "HP")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -16,8 +15,6 @@ Salida_texto = NodePath("output-panel/RichTextLabel")
 Selection_tab = NodePath("TabContainer")
 Carga = NodePath("TabContainer/Verificar motor/PanelContainer/HBoxContainer/Carga/VBoxContainer/HBoxContainer/Valores-carga/Kg")
 Velocidad = NodePath("TabContainer/Verificar motor/PanelContainer/HBoxContainer/Carga/VBoxContainer/HBoxContainer/Valores-carga/Velocidad")
-Poleas = NodePath("TabContainer/Verificar motor/PanelContainer/HBoxContainer/Carga/VBoxContainer/HBoxContainer/Valores-carga/Poleas")
-Potencia = NodePath("TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/VBoxContainer/HBoxContainer/Valores-fuente/Potencia")
 Voltaje_estrella = NodePath("TabContainer/Verificar motor/PanelContainer/HBoxContainer/Motor/VBoxContainer/HBoxContainer/Valores-motor/Voltaje-estrella")
 Voltaje_triangulo = NodePath("TabContainer/Verificar motor/PanelContainer/HBoxContainer/Motor/VBoxContainer/HBoxContainer/Valores-motor/Voltaje-triangulo")
 Par_polos = NodePath("TabContainer/Verificar motor/PanelContainer/HBoxContainer/Motor/VBoxContainer/HBoxContainer/Valores-motor/Par-de-polos")
@@ -25,11 +22,6 @@ HP = NodePath("TabContainer/Verificar motor/PanelContainer/HBoxContainer/Motor/V
 
 [node name="Calculadora" type="Node" parent="." unique_id=378350077]
 script = ExtResource("2_c4hpf")
-
-[node name="Verificar-motor" type="Node" parent="." unique_id=523258808]
-script = ExtResource("3_2ldxg")
-
-[node name="Calcular-motor" type="Node" parent="." unique_id=1580241876]
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=455429002]
 layout_mode = 1
@@ -99,11 +91,6 @@ layout_mode = 2
 text = "Velocidad:"
 horizontal_alignment = 1
 
-[node name="Label-poleas" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Carga/VBoxContainer/HBoxContainer/Labes-carga" unique_id=1413107483]
-layout_mode = 2
-text = "Poleas:"
-horizontal_alignment = 1
-
 [node name="VSeparator" type="VSeparator" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Carga/VBoxContainer/HBoxContainer" unique_id=767614175]
 layout_mode = 2
 
@@ -118,11 +105,6 @@ alignment = 1
 [node name="Velocidad" type="LineEdit" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Carga/VBoxContainer/HBoxContainer/Valores-carga" unique_id=666144020]
 layout_mode = 2
 placeholder_text = "ms"
-alignment = 1
-
-[node name="Poleas" type="LineEdit" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Carga/VBoxContainer/HBoxContainer/Valores-carga" unique_id=1914536578]
-layout_mode = 2
-placeholder_text = "N°"
 alignment = 1
 
 [node name="Fuente" type="PanelContainer" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer" unique_id=1518398301]
@@ -154,11 +136,6 @@ layout_mode = 2
 text = "Frecuencia:"
 horizontal_alignment = 1
 
-[node name="Label-corriente" type="Label" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/VBoxContainer/HBoxContainer/Labels-fuente" unique_id=1088673037]
-layout_mode = 2
-text = "Potencia"
-horizontal_alignment = 1
-
 [node name="VSeparator" type="VSeparator" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/VBoxContainer/HBoxContainer" unique_id=244622206]
 layout_mode = 2
 
@@ -175,11 +152,6 @@ horizontal_alignment = 1
 layout_mode = 2
 text = "50 Hz"
 horizontal_alignment = 1
-
-[node name="Potencia" type="LineEdit" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Fuente/VBoxContainer/HBoxContainer/Valores-fuente" unique_id=622652993]
-layout_mode = 2
-placeholder_text = "W"
-alignment = 1
 
 [node name="Motor" type="PanelContainer" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer" unique_id=708523305]
 layout_mode = 2
@@ -239,7 +211,7 @@ alignment = 1
 
 [node name="Par-de-polos" type="LineEdit" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Motor/VBoxContainer/HBoxContainer/Valores-motor" unique_id=183306446]
 layout_mode = 2
-placeholder_text = " 2 P.P"
+placeholder_text = "P.P"
 alignment = 1
 
 [node name="HP-motor" type="LineEdit" parent="TabContainer/Verificar motor/PanelContainer/HBoxContainer/Motor/VBoxContainer/HBoxContainer/Valores-motor" unique_id=1169539831]
